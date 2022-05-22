@@ -56,10 +56,12 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
+    
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
       run:
         shell: bash
+        working-directory: backend
 
     steps:
       # Checkout the repository to the GitHub Actions runner
@@ -75,7 +77,7 @@ jobs:
 
       # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
       - name: Terraform Backend Init
-        run: cd backend && terraform init
+        run: terraform init
 
       # Checks that all Terraform configuration files adhere to a canonical format
       - name: Terraform Backend Format
@@ -161,6 +163,8 @@ jobs:
           terraform_version: 1.1.8
           # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
+      - name: Move to frontend folder
+        run: cd ~/frontend
       # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
       - name: Terraform Init
         run: cd frontend && terraform init
