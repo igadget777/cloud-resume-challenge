@@ -79,16 +79,16 @@ jobs:
 
       # Checks that all Terraform configuration files adhere to a canonical format
       - name: Terraform Backend Format
-        run: cd backend && terraform fmt -check
+        run: terraform fmt -check
 
       # Validate the configuration files
       - name: Terraform Backend Validate
-        run: cd backend && terraform validate -no-color
+        run: terraform validate -no-color
 
       # Generates an execution plan for Terraform
       - name: Terraform Backend Plan
         if: github.event_name == 'pull_request'
-        run: cd backend && terraform plan -input=false
+        run: terraform plan -input=false
         continue-on-error: true
 
       # #  Add a comment to the pull request with the results of the format, init and plan steps. In addition, it displays the plan output (steps.plan.outputs.stdout)
