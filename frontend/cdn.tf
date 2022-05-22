@@ -2,7 +2,7 @@
 # CloudFront
 ################
 locals {
-  s3_origin_id          = aws_s3_bucket.this.bucket   #"S3Origin"
+  s3_origin_id          = aws_s3_bucket.this.bucket     #"S3Origin"
   s3_redirect_origin_id = aws_s3_bucket.redirect.bucket #"S3CustomOrigin"
 }
 #######################
@@ -16,7 +16,7 @@ resource "aws_cloudfront_origin_access_identity" "oai" {
 ##################################
 data "aws_cloudfront_cache_policy" "cache_policy" {
   # id          = "658327ea-f89d-4fab-a63d-7e88639e58f6"
-  name        = "Managed-CachingOptimized"
+  name = "Managed-CachingOptimized"
 }
 ##################################
 # Create a CloudFront distribution
@@ -43,14 +43,14 @@ resource "aws_cloudfront_distribution" "cdn" {
   price_class = "PriceClass_100"
 
   default_cache_behavior {
-    allowed_methods  = ["HEAD", "GET", "OPTIONS"]
-    cached_methods   = ["HEAD", "GET", "OPTIONS"]
-    target_origin_id = local.s3_origin_id
+    allowed_methods        = ["HEAD", "GET", "OPTIONS"]
+    cached_methods         = ["HEAD", "GET", "OPTIONS"]
+    target_origin_id       = local.s3_origin_id
     viewer_protocol_policy = "redirect-to-https"
 
     cache_policy_id = data.aws_cloudfront_cache_policy.cache_policy.id
 
-    compress               = true
+    compress = true
   }
   aliases = [var.sub-domain]
 
