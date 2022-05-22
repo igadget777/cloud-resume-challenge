@@ -74,19 +74,19 @@ jobs:
           # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-      - name: Terraform Init
+      - name: Terraform Backend Init
         run: cd backend && terraform init
 
       # Checks that all Terraform configuration files adhere to a canonical format
-      - name: Terraform Format
+      - name: Terraform Backend Format
         run: cd backend && terraform fmt -check
 
       # Validate the configuration files
-      - name: Terraform Validate
+      - name: Terraform Backend Validate
         run: cd backend && terraform validate -no-color
 
       # Generates an execution plan for Terraform
-      - name: Terraform Plan
+      - name: Terraform Backend Plan
         if: github.event_name == 'pull_request'
         run: cd backend && terraform plan -input=false
         continue-on-error: true
@@ -122,14 +122,14 @@ jobs:
       #         body: output
       #       })
 
-      - name: Terraform Plan Status
+      - name: Terraform Backend Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
 
         # On push to main, build or change infrastructure according to Terraform configuration files
         # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
         # Only run when a commit is pushed to main
-      - name: Terraform Apply
+      - name: Terraform Backend  Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: cd backend && terraform apply -auto-approve -input=false
 
@@ -166,15 +166,15 @@ jobs:
         run: cd frontend && terraform init
 
       # Checks that all Terraform configuration files adhere to a canonical format
-      - name: Terraform Format
+      - name: Terraform Frontend Format
         run: cd frontend && terraform fmt -check
 
       # Validate the configuration files
-      - name: Terraform Validate
+      - name: Terraform Frontend Validate
         run: cd frontend && terraform validate -no-color
 
       # Generates an execution plan for Terraform
-      - name: Terraform Plan
+      - name: Terraform Frontend Plan
         if: github.event_name == 'pull_request'
         run: cd frontend && terraform plan -input=false
         continue-on-error: true
@@ -210,14 +210,14 @@ jobs:
       #         body: output
       #       })
 
-      - name: Terraform Plan Status
+      - name: Terraform Frontend Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
 
         # On push to main, build or change infrastructure according to Terraform configuration files
         # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
         # Only run when a commit is pushed to main
-      - name: Terraform Apply
+      - name: Terraform Frontend Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: cd frontend && terraform apply -auto-approve -input=false
         # run: exit 1
