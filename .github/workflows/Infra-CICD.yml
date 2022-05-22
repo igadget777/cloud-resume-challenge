@@ -79,16 +79,16 @@ jobs:
 
       # Checks that all Terraform configuration files adhere to a canonical format
       - name: Terraform Format
-        run: terraform fmt -check
+        run: cd backend && terraform fmt -check
 
       # Validate the configuration files
       - name: Terraform Validate
-        run: terraform validate -no-color
+        run: cd backend && terraform validate -no-color
 
       # Generates an execution plan for Terraform
       - name: Terraform Plan
         if: github.event_name == 'pull_request'
-        run: terraform plan -input=false
+        run: cd backend && terraform plan -input=false
         continue-on-error: true
 
       # #  Add a comment to the pull request with the results of the format, init and plan steps. In addition, it displays the plan output (steps.plan.outputs.stdout)
@@ -131,7 +131,7 @@ jobs:
         # Only run when a commit is pushed to main
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -auto-approve -input=false
+        run: cd backend && terraform apply -auto-approve -input=false
 
   
   job-frontend:
@@ -167,16 +167,16 @@ jobs:
 
       # Checks that all Terraform configuration files adhere to a canonical format
       - name: Terraform Format
-        run: terraform fmt -check
+        run: cd frontend && terraform fmt -check
 
       # Validate the configuration files
       - name: Terraform Validate
-        run: terraform validate -no-color
+        run: cd frontend && terraform validate -no-color
 
       # Generates an execution plan for Terraform
       - name: Terraform Plan
         if: github.event_name == 'pull_request'
-        run: terraform plan -input=false
+        run: cd frontend && terraform plan -input=false
         continue-on-error: true
 
       # #  Add a comment to the pull request with the results of the format, init and plan steps. In addition, it displays the plan output (steps.plan.outputs.stdout)
@@ -219,73 +219,5 @@ jobs:
         # Only run when a commit is pushed to main
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -auto-approve -input=false
+        run: cd frontend && terraform apply -auto-approve -input=false
         # run: exit 1
-
-  # job-copy-files-from-other-repo:
-  #   name: copy website files from external repo
-  #   # if: github.event_name == 'push'
-  #   needs: job-build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-  #     - uses: actions/checkout@v3
-  #       with:
-  #         GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
-      
-  #     - name: Get API Gateway ID and store in environmnt variable
-  #       run: git checkout git@github.com:username/repoA.git
-
-
-  # job-sync-site:
-  #   name: sync website files to s3 bucket
-  #   if: github.event_name == 'push'
-  #   needs: job-build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-  #     - uses: actions/checkout@v3
-  #     - name: Set AWS Credentials
-  #       uses: aws-actions/configure-aws-credentials@v1
-  #       with:
-  #         AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
-  #         AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-  #         AWS_REGION: "us-east-1" # optional: defaults to us-east-1
-  #         # SOURCE_DIR: "resume-site" # optional: defaults to entire repository
-
-  #     - name: Get API Gateway ID and store in environmnt variable
-  #       run: echo rest_api_id=aws apigateway get-rest-apis --query 'items[?name==`${{secrets.AWS_API_GATEWAY_NAME}}`].id' --output text >> $GITHUB_ENV
-
-  #     - name: Export API invoke url to a JavaScript file
-  #       run: echo const API = {{ env.rest_api_id }}.execute-api.us-east-1.amazonaws.com/prod > ./website/invoke-url.js
-
-  #     - name: Copy to S3
-  #       run: aws s3 sync . s3://{AWS_S3_BUCKET}" --exclude '.gitignore' --exclude '.git*/*' --follow-symlinks --delete
-  #       env:
-  #         AWS_S3_BUCKET: ${{secrets.AWS_S3_BUCKET}}
-  #         # AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
-  #         # AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-  #         # AWS_REGION: 'us-east-1'   # optional: defaults to us-east-1
-
-  #       # run: aws s3 sync . s3://${{secrets.AWS_S3_BUCKET}} --exclude ".git*, .terraform, files"
-
-  # job-invalidate-cdn:
-  #   name: Invalidate CloudFront
-  #   if: github.event_name == 'push'
-  #   needs: job-upload-site
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-  #     - uses: actions/checkout@v3
-  #     - name: Set AWS Credentials
-  #       uses: aws-actions/configure-aws-credentials@v1
-  #       with:
-  #         AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
-  #         AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-  #         AWS_REGION: "us-east-1" # optional: defaults to us-east-1
-  #     - name: Store Cloudfront Distribution Id in env variable
-  #       run: echo distribution_id=aws cloudfront list-distributions --query "DistributionList.Items[*].{id:Id,origin:Origins.Items[0].Id}[?origin==${{secrets.AWS_S3_BUCKET}}].id" --output text >> $GITHUB_ENV
-  #     - name: Invalidate Cloudfront
-  #       run: aws cloudfront create-invalidation --distribution-id ${{ env.distribution_id }} --paths "/*"
-
-     
