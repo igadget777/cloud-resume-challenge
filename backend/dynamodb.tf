@@ -1,7 +1,7 @@
 # DynamoDb
 resource "aws_dynamodb_table" "table" {
-  name           = "cloud-resume-challenge"
-  billing_mode   = "PAY_PER_REQUEST"
+  name         = "cloud-resume-challenge"
+  billing_mode = "PAY_PER_REQUEST"
 
   lifecycle {
     create_before_destroy = false # if true an error is thrown

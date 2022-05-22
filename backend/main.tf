@@ -15,6 +15,6 @@ terraform {
     key    = "default/backend/terraform.tfstate"
 
     # dynamodb_table = "terraform-locks-resume-challenge"
-    encrypt        = true #ensures Terraform state will be encrypted on disk when stored in S3
+    encrypt = true #ensures Terraform state will be encrypted on disk when stored in S3
   }
 }

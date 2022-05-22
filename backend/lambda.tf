@@ -8,7 +8,7 @@ resource "aws_lambda_function" "put-visits" {
   # s3_key =  data.aws_s3_object.frontend.key  
   # s3_object_version = data.aws_s3_object.frontend.version_id
 
-  role          = aws_iam_role.iam-for-lambda.arn
+  role = aws_iam_role.iam-for-lambda.arn
 
   memory_size = 128
   runtime     = "python3.9"
