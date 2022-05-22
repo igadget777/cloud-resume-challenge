@@ -1,5 +1,5 @@
-fontend/**
+fontend/.terraform/**
 
-backend/**
+fontend/.terraform/**
 
 !.gitignore
