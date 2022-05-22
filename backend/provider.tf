@@ -1,5 +1,5 @@
 provider "aws" {
-  # profile = "terraform"
+  profile = "terraform"
   alias  = "terraform"
   region = var.aws-region
 }
