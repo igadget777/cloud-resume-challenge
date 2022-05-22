@@ -131,7 +131,7 @@ jobs:
         # Only run when a commit is pushed to main
       - name: Terraform Backend  Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: cd backend && terraform apply -auto-approve -input=false
+        run: terraform apply -auto-approve -input=false
 
   
   job-frontend:
