@@ -3,9 +3,9 @@
 # Create s3 bucket
 #######################
 resource "aws_s3_bucket" "this" {
-  bucket        = var.s3-bucket-name
-  tags          = var.s3-tags
-  
+  bucket = var.s3-bucket-name
+  tags   = var.s3-tags
+
   force_destroy = true
 
 }
