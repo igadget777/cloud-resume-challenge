@@ -14,15 +14,15 @@ variable "s3-redirect-bucket" {
   description = "An s3 bucket redirect to main static website"
 }
 
-variable "s3-bucket-acl" {
-  type        = string
-  default     = "private"
-  description = <<-EOT
-    The [canned ACL](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl) to apply.
-    We recommend `private` to avoid exposing sensitive information. Conflicts with `grants`.
-   only used if aws_s3_bucket_ownership_controls is not set
-   EOT
-}
+# variable "s3-bucket-acl" {
+#   type        = string
+#   default     = "private"
+#   description = <<-EOT
+#     The [canned ACL](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl) to apply.
+#     We recommend `private` to avoid exposing sensitive information. Conflicts with `grants`.
+#    only used if aws_s3_bucket_ownership_controls is not set
+#    EOT
+# }
 
 variable "s3-versioning" {
   type        = string

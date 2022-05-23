@@ -24,21 +24,21 @@ resource "aws_s3_bucket_ownership_controls" "ownership" {
     object_ownership = "BucketOwnerPreferred" //"BucketOwnerEnforced"
   }
 }
-#######################
-# Create bucket ACL
-#######################
-resource "aws_s3_bucket_acl" "bucket-acl" {
-  bucket = aws_s3_bucket.this.id
-  acl    = var.s3-bucket-acl
-}
+# #######################
+# # Create bucket ACL
+# #######################
+# resource "aws_s3_bucket_acl" "bucket-acl" {
+#   bucket = aws_s3_bucket.this.id
+#   acl    = var.s3-bucket-acl
+# }
 #######################
 # Block public access
 #######################
 resource "aws_s3_bucket_public_access_block" "s3-block-access" {
   bucket                  = aws_s3_bucket.this.id
-  block_public_acls       = true
-  block_public_policy     = true
-  ignore_public_acls      = true
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
   restrict_public_buckets = false //to allow putbucketpolicy together with "BucketOwnerPreferred"
 }
 #######################
