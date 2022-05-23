@@ -19,9 +19,10 @@ data "aws_iam_policy_document" "bucket-policy" {
       # identifiers = [aws_cloudfront_origin_access_identity.oai.iam_arn]
       identifiers = ["*"]
     }
-    actions = ["s3:ListBucket"]
+    actions = ["s3:ListBucket", "s3:PutObject"]
     resources = [
-    "arn:aws:s3:::${var.s3-bucket-name}"]
+    "arn:aws:s3:::${var.s3-bucket-name}",
+    "arn:aws:s3:::${var.s3-bucket-name}/*"]
   }
   statement {
     sid    = "Cloudfront-s3-OAI"
