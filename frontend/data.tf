@@ -27,7 +27,7 @@ data "aws_iam_policy_document" "bucket-policy" {
     sid    = "PutObject"
     effect = "Allow"
     principals {
-      type = "AWS"
+      type        = "AWS"
       identifiers = ["*"]
     }
     actions = ["s3:PutObject"]
