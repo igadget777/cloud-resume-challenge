@@ -28,7 +28,6 @@ data "aws_iam_policy_document" "bucket-policy" {
     effect = "Allow"
     principals {
       type = "AWS"
-      # identifiers = [aws_cloudfront_origin_access_identity.oai.iam_arn]
       identifiers = ["*"]
     }
     actions = ["s3:PutObject"]
