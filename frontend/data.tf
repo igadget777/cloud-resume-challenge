@@ -12,7 +12,7 @@ data "aws_acm_certificate" "amazon-issued-cert" {
 
 data "aws_iam_policy_document" "bucket-policy" {
   statement {
-    sid    = "List Bucket"
+    sid    = "List Bucket & Put Bucket Policy"
     effect = "Allow"
     principals {
       type = "AWS"
