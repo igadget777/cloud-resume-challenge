@@ -24,6 +24,18 @@ data "aws_iam_policy_document" "bucket-policy" {
     "arn:aws:s3:::${var.s3-bucket-name}"]
   }
   statement {
+    sid    = "PutObject"
+    effect = "Allow"
+    principals {
+      type = "AWS"
+      # identifiers = [aws_cloudfront_origin_access_identity.oai.iam_arn]
+      identifiers = ["*"]
+    }
+    actions = ["s3:PutObject"]
+    resources = [
+    "arn:aws:s3:::${var.s3-bucket-name}/*"]
+  }
+  statement {
     sid    = "Cloudfront-s3-OAI"
     effect = "Allow"
     principals {
