@@ -19,9 +19,9 @@ data "aws_iam_policy_document" "bucket-policy" {
       # identifiers = [aws_cloudfront_origin_access_identity.oai.iam_arn]
       identifiers = ["*"]
     }
-    actions   = ["s3:ListBucket"]
+    actions = ["s3:ListBucket"]
     resources = [
-      "arn:aws:s3:::${var.s3-bucket-name}"]
+    "arn:aws:s3:::${var.s3-bucket-name}"]
   }
   statement {
     sid    = "Cloudfront-s3-OAI"
@@ -31,9 +31,9 @@ data "aws_iam_policy_document" "bucket-policy" {
       # identifiers = [aws_cloudfront_origin_access_identity.oai.iam_arn]
       identifiers = ["${aws_cloudfront_origin_access_identity.oai.iam_arn}"]
     }
-    actions   = ["s3:GetObject"]
+    actions = ["s3:GetObject"]
     resources = [
-      "arn:aws:s3:::${var.s3-bucket-name}/*"]
+    "arn:aws:s3:::${var.s3-bucket-name}/*"]
   }
 }
 
