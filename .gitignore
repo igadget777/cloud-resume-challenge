@@ -2,4 +2,6 @@ fontend/.terraform/**
 
 fontend/.terraform/**
 
+backend/files/put_function.zip
+
 !.gitignore
