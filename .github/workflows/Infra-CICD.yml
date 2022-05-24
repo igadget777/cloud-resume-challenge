@@ -10,6 +10,11 @@ on:
 #   contents: read
 # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      name:
+        default: ''
+        description: 'Workflow to trigger passed by client_payload'
+        required: true
 
 jobs:
   # job-python-test:
@@ -134,7 +139,7 @@ jobs:
         # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
         # Only run when a commit is pushed to main
       - name: Terraform Backend  Apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event.inputs.name) == 'push' 
         run: terraform apply -auto-approve -input=false
 
   
@@ -223,6 +228,6 @@ jobs:
         # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
         # Only run when a commit is pushed to main
       - name: Terraform Frontend Apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event.inputs.name == 'push') 
         run: terraform apply -auto-approve -input=false
         # run: exit 1
