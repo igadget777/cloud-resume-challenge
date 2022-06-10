@@ -1,6 +1,6 @@
-fontend/.terraform/**
+backend/*terraform/**
 
-fontend/.terraform/**
+frontend/*terraform/**
 
 backend/files/put_function.zip
 
