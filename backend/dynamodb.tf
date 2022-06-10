@@ -5,9 +5,6 @@ resource "aws_dynamodb_table" "table" {
 
   lifecycle {
     create_before_destroy = false # if true an error is thrown
-    ignore_changes = [
-      all,
-    ]
   }
 
   attribute {
@@ -28,6 +25,12 @@ resource "aws_dynamodb_table" "table" {
 resource "aws_dynamodb_table_item" "example" {
   table_name = aws_dynamodb_table.table.name
   hash_key   = aws_dynamodb_table.table.hash_key
+
+  lifecycle {
+    ignore_changes = [
+      item
+    ]
+  }
 
   item = <<ITEM
 {
