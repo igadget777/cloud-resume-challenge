@@ -6,7 +6,7 @@ terraform {
       version = "4.13.0"
     }
   }
-  required_version = ">=0.14.9"
+  required_version = "1.1.8"
 
   # Configure Terraform to store the state in your S3 bucket
   backend "s3" {
