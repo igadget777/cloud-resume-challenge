@@ -5,6 +5,9 @@ resource "aws_dynamodb_table" "table" {
 
   lifecycle {
     create_before_destroy = false # if true an error is thrown
+    ignore_changes = [
+      "attribute",
+    ]
   }
 
   attribute {
