@@ -54,7 +54,7 @@ variable "domain" {
 }
 variable "sub-domain" {
   type        = string
-  default     = "www.brettstephen.com"
+  default     = "resume.brettstephen.com"
   description = "Sub Domain name"
 }
 variable "cdn-description" {
