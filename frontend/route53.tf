@@ -8,6 +8,7 @@ resource "aws_route53_record" "www" {
   name    = var.sub-domain
   type    = "A"
 
+
   alias {
     name                   = aws_cloudfront_distribution.cdn.domain_name
     zone_id                = aws_cloudfront_distribution.cdn.hosted_zone_id
@@ -21,8 +22,9 @@ resource "aws_route53_record" "www" {
 
 resource "aws_route53_record" "main" {
   zone_id = data.aws_route53_zone.zone.zone_id
-  name    = var.domain
-  type    = "A"
+  # name    = var.domain
+  name = aws_api_gateway_domain_name.example.domain_name
+  type = "A"
 
   alias {
     name                   = aws_cloudfront_distribution.cdn-redirect.domain_name
@@ -45,13 +47,13 @@ resource "aws_acm_certificate_validation" "validation" {
 # #######################
 # # Create an api doamin
 # #######################
-# # Regional (ACM Certificate)
-# resource "aws_api_gateway_domain_name" "domain" {
-#   domain_name              = "api.${var.domain}"
-#   regional_certificate_arn = aws_acm_certificate_validation.validation.certificate_arn
+# Regional (ACM Certificate)
+resource "aws_api_gateway_domain_name" "domain" {
+  domain_name              = "api.resume.${var.domain}"
+  regional_certificate_arn = aws_acm_certificate_validation.validation.certificate_arn
 
-#   endpoint_configuration {
-#     types = ["REGIONAL"]
-#   }
-# }
+  endpoint_configuration {
+    types = ["REGIONAL"]
+  }
+}
 
