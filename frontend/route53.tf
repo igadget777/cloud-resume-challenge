@@ -31,7 +31,7 @@ resource "aws_acm_certificate_validation" "validation" {
 # #######################
 # Regional (ACM Certificate)
 resource "aws_api_gateway_domain_name" "domain" {
-  domain_name              = "api.resume.${var.domain}"
+  domain_name              = "api-resume.${var.domain}"
   regional_certificate_arn = aws_acm_certificate_validation.validation.certificate_arn
 
   endpoint_configuration {
