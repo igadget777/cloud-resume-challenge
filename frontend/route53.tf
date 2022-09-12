@@ -23,7 +23,7 @@ resource "aws_route53_record" "www" {
 resource "aws_route53_record" "main" {
   zone_id = data.aws_route53_zone.zone.zone_id
   # name    = var.domain
-  name = aws_api_gateway_domain_name.example.domain_name
+  name = aws_api_gateway_domain_name.domain.domain_name
   type = "A"
 
   alias {
