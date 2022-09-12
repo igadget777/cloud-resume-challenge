@@ -20,24 +20,6 @@ resource "aws_route53_record" "www" {
   ]
 }
 
-resource "aws_route53_record" "main" {
-  zone_id = data.aws_route53_zone.zone.zone_id
-  # name    = var.domain
-  name = aws_api_gateway_domain_name.domain.domain_name
-  type = "A"
-
-  alias {
-    name                   = aws_cloudfront_distribution.cdn-redirect.domain_name
-    zone_id                = aws_cloudfront_distribution.cdn-redirect.hosted_zone_id
-    evaluate_target_health = true
-  }
-
-  depends_on = [
-    aws_cloudfront_distribution.cdn-redirect
-  ]
-}
-
-
 # Certificate Validation
 resource "aws_acm_certificate_validation" "validation" {
   certificate_arn = data.aws_acm_certificate.amazon-issued-cert.arn
@@ -57,3 +39,19 @@ resource "aws_api_gateway_domain_name" "domain" {
   }
 }
 
+
+resource "aws_route53_record" "api" {
+  zone_id = data.aws_route53_zone.zone.zone_id
+  name    = aws_api_gateway_domain_name.domain.domain_name
+  type    = "A"
+
+  alias {
+    name                   = aws_cloudfront_distribution.cdn-redirect.domain_name
+    zone_id                = aws_cloudfront_distribution.cdn-redirect.hosted_zone_id
+    evaluate_target_health = true
+  }
+
+  depends_on = [
+    aws_cloudfront_distribution.cdn
+  ]
+}
