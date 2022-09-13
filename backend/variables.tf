@@ -10,7 +10,7 @@ variable "domain" {
 }
 variable "sub-domain" {
   type        = string
-  default     = "www.brettstephen.com"
+  default     = "resume.brettstephen.com"
   description = "Sub Domain name"
 }
 
@@ -18,4 +18,10 @@ variable "stage_name" {
   type        = string
   default     = "prod"
   description = "API Stage Name"
+}
+
+
+variable "aws_acm_cert" {
+  type = string
+  description = "ACM certificate arn"
 }
