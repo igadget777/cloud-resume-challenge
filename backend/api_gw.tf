@@ -211,6 +211,9 @@ resource "aws_api_gateway_domain_name" "api-resume" {
   endpoint_configuration {
     types = ["REGIONAL"]
   }
+  lifecycle {
+    create_before_destroy = true //recommended
+  }
 }
 resource "aws_api_gateway_base_path_mapping" "mapping" {
   api_id      = aws_api_gateway_rest_api.api.id
