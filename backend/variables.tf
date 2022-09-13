@@ -22,6 +22,6 @@ variable "stage_name" {
 
 
 variable "aws_acm_cert" {
-  type = string
+  type        = string
   description = "ACM certificate arn"
 }
