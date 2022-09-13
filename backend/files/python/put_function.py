@@ -13,7 +13,7 @@ resource_db = boto3.resource('dynamodb')
 
 table = resource_db.Table(dynamodbTableName)
 
-SITE_URL = "www.brettstephen.com"
+SITE_URL = "resume.brettstephen.com"
 
 
 def lambda_handler(event, context):
