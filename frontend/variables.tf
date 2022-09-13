@@ -64,15 +64,15 @@ variable "cdn-description" {
 }
 
 variable "api_gw_domain_name" {
-  type = string
+  type        = string
   description = "(optional) describe your variable"
 }
 variable "api_gw_regional_domain_name" {
-  type = string
+  type        = string
   description = "(optional) describe your variable"
 }
 variable "api_gw_regional_zone_id" {
-  type = string
+  type        = string
   description = "(optional) describe your variable"
 }
 
