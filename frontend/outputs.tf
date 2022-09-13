@@ -7,5 +7,6 @@ output "oai" {
   value = aws_cloudfront_origin_access_identity.oai.iam_arn
 }
 
-
-
+output "aws_acm_cert" {
+  value = aws_acm_certificate_validation.validation.certificate_arn
+}
