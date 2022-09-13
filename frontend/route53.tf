@@ -25,33 +25,19 @@ resource "aws_acm_certificate_validation" "validation" {
   certificate_arn = data.aws_acm_certificate.amazon-issued-cert.arn
 }
 
-
-# #######################
-# # Create an api doamin
-# #######################
-# Regional (ACM Certificate)
-resource "aws_api_gateway_domain_name" "domain" {
-  domain_name              = "api-resume.${var.domain}"
-  regional_certificate_arn = aws_acm_certificate_validation.validation.certificate_arn
-
-  endpoint_configuration {
-    types = ["REGIONAL"]
-  }
-}
-
-
-resource "aws_route53_record" "api" {
+resource "aws_route53_record" "api-resume" {
   zone_id = data.aws_route53_zone.zone.zone_id
-  name    = aws_api_gateway_domain_name.domain.domain_name
+  name    = var.api_gw_domain_name
   type    = "A"
 
   alias {
-    name                   = aws_cloudfront_distribution.cdn-redirect.domain_name
-    zone_id                = aws_cloudfront_distribution.cdn-redirect.hosted_zone_id
+    name                   = var.api_gw_regional_domain_name
+    zone_id                = var.api_gw_regional_zone_id
     evaluate_target_health = true
   }
 
   depends_on = [
-    aws_cloudfront_distribution.cdn
+    var.api_gw_domain_name
   ]
 }
+
