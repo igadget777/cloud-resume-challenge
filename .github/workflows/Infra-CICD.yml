@@ -54,8 +54,8 @@ jobs:
   #       run: pytest tests/test*
         
 
-  job-backend:
-    name: "Terraform backend"
+  job-infrastructure:
+    name: "Terraform infrastructure"
     runs-on: ubuntu-latest
     env:
       # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -68,7 +68,8 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: backend
+        working-directory: /
+        # working-directory: backend
 
     steps:
       # Checkout the repository to the GitHub Actions runner
@@ -83,19 +84,19 @@ jobs:
           # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-      - name: Terraform Backend Init
+      - name: Terraform Infrastructure Init
         run: terraform init
 
       # Checks that all Terraform configuration files adhere to a canonical format
-      - name: Terraform Backend Format
+      - name: Terraform Infrastructure Format
         run: terraform fmt -check
 
       # Validate the configuration files
-      - name: Terraform Backend Validate
+      - name: Terraform Infrastructure Validate
         run: terraform validate -no-color
 
       # Generates an execution plan for Terraform
-      - name: Terraform Backend Plan
+      - name: Terraform Infrastructure Plan
         if: github.event_name == 'pull_request'
         run: terraform plan -input=false
         continue-on-error: true
@@ -131,103 +132,73 @@ jobs:
       #         body: output
       #       })
 
-      - name: Terraform Backend Plan Status
+      - name: Terraform Infrastructure Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
 
         # On push to main, build or change infrastructure according to Terraform configuration files
         # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
         # Only run when a commit is pushed to main
-      - name: Terraform Backend  Apply
+      - name: Terraform Infrastructure Apply
         if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event.inputs.name == 'push') 
         run: terraform apply -auto-approve -input=false
 
   
-  job-frontend:
-    name: "Terraform Frontend"
-    needs: job-backend
-    runs-on: ubuntu-latest
-    env:
-      # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # TF_ACTION_WORKING_DIR: "frontend"
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  # job-frontend:
+  #   name: "Terraform Frontend"
+  #   needs: job-backend
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     # TF_ACTION_WORKING_DIR: "frontend"
+  #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: frontend
+  #   # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+  #   defaults:
+  #     run:
+  #       shell: bash
+  #       working-directory: frontend
 
-    steps:
-      # Checkout the repository to the GitHub Actions runner
-      - name: Checkout
-        uses: actions/checkout@v3
+  #   steps:
+  #     # Checkout the repository to the GitHub Actions runner
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
 
-      # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
-      - name: HashiCorp - Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.1.8
-          # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+  #     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+  #     - name: HashiCorp - Setup Terraform
+  #       uses: hashicorp/setup-terraform@v2
+  #       with:
+  #         terraform_version: 1.1.8
+  #         # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-      # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-      - name: Terraform Init
-        run: terraform init
+  #     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+  #     - name: Terraform Init
+  #       run: terraform init
 
-      # Checks that all Terraform configuration files adhere to a canonical format
-      - name: Terraform Frontend Format
-        run: terraform fmt -check
+  #     # Checks that all Terraform configuration files adhere to a canonical format
+  #     - name: Terraform Frontend Format
+  #       run: terraform fmt -check
 
-      # Validate the configuration files
-      - name: Terraform Frontend Validate
-        run: terraform validate -no-color
+  #     # Validate the configuration files
+  #     - name: Terraform Frontend Validate
+  #       run: terraform validate -no-color
 
-      # Generates an execution plan for Terraform
-      - name: Terraform Frontend Plan
-        if: github.event_name == 'pull_request'
-        run: terraform plan -input=false
-        continue-on-error: true
+  #     # Generates an execution plan for Terraform
+  #     - name: Terraform Frontend Plan
+  #       if: github.event_name == 'pull_request'
+  #       run: terraform plan -input=false
+  #       continue-on-error: true
 
-      # #  Add a comment to the pull request with the results of the format, init and plan steps. In addition, it displays the plan output (steps.plan.outputs.stdout)
-      # - name: Update Pull Request
-      #   uses: actions/github-script@6
-      #   if: github.event_name == 'pull_request'
-      #   env:
-      #     PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     script: |
-      #       const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-      #       #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-      #       #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
-      #       #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
 
-      #       <details><summary>Show Plan</summary>
+  #     - name: Terraform Frontend Plan Status
+  #       if: steps.plan.outcome == 'failure'
+  #       run: exit 1
 
-      #       \`\`\`\n
-      #       ${process.env.PLAN}
-      #       \`\`\`
-
-      #       </details>
-
-      #       *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
-
-      #       github.rest.issues.createComment({
-      #         issue_number: context.issue.number,
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         body: output
-      #       })
-
-      - name: Terraform Frontend Plan Status
-        if: steps.plan.outcome == 'failure'
-        run: exit 1
-
-        # On push to main, build or change infrastructure according to Terraform configuration files
-        # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
-        # Only run when a commit is pushed to main
-      - name: Terraform Frontend Apply
-        if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event.inputs.name == 'push') 
-        run: terraform apply -auto-approve -input=false
-        # run: exit 1
+  #       # On push to main, build or change infrastructure according to Terraform configuration files
+  #       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+  #       # Only run when a commit is pushed to main
+  #     - name: Terraform Frontend Apply
+  #       if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event.inputs.name == 'push') 
+  #       run: terraform apply -auto-approve -input=false
+  #       # run: exit 1
