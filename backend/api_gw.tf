@@ -192,3 +192,28 @@ resource "aws_api_gateway_integration_response" "cors-integration-response" {
   ]
 }
 
+
+# MAPPING
+# resource "aws_api_gateway_stage" "production" {
+#   deployment_id = aws_api_gateway_deployment.deployment.id
+#   rest_api_id   = aws_api_gateway_rest_api.api.id
+#   stage_name    = "production"
+# }
+
+# #######################
+# # Create an api doamin
+# #######################
+# Regional (ACM Certificate)
+resource "aws_api_gateway_domain_name" "api-resume" {
+  domain_name              = "api-resume.${var.domain}"
+  regional_certificate_arn = var.aws_acm_cert
+
+  endpoint_configuration {
+    types = ["REGIONAL"]
+  }
+}
+resource "aws_api_gateway_base_path_mapping" "mapping" {
+  api_id      = aws_api_gateway_rest_api.api.id
+  stage_name  = var.stage_name
+  domain_name = aws_api_gateway_domain_name.api-resume.domain_name
+}
