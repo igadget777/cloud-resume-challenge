@@ -1,6 +1,16 @@
+.terraform.lock.hcl
+
+terraform.*
+
+*terraform/**
+
 backend/*terraform/**
 
+backend/.terraform.lock.hcl
+
 frontend/*terraform/**
+
+frontend/.terraform.lock.hcl
 
 backend/files/put_function.zip
 
