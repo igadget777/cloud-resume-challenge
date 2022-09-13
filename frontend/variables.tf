@@ -63,3 +63,16 @@ variable "cdn-description" {
   description = "Describes what the Cloudfront Distribution is for"
 }
 
+variable "api_gw_domain_name" {
+  type = string
+  description = "(optional) describe your variable"
+}
+variable "api_gw_regional_domain_name" {
+  type = string
+  description = "(optional) describe your variable"
+}
+variable "api_gw_regional_zone_id" {
+  type = string
+  description = "(optional) describe your variable"
+}
+
