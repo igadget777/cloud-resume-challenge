@@ -1,3 +1,3 @@
-# Terraform Resume Infrastructure
+# Terraform Resume Challenge Infrastructure
 
-Backend and Frontend modules infrastructure for React resume site.
+Backend and Frontend modules infrastructure for resume site.
