@@ -6,7 +6,7 @@ variable "aws-region" {
 variable "domain" {
   type        = string
   default     = "brettstephen.com"
-  description = "Sub Domain name"
+  description = "Domain name"
 }
 variable "sub-domain" {
   type        = string
